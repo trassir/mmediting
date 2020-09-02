@@ -10,6 +10,7 @@ from .generation_unpaired_dataset import GenerationUnpairedDataset
 from .img_inpainting_dataset import ImgInpaintingDataset
 from .registry import DATASETS, PIPELINES
 from .sr_annotation_dataset import SRAnnotationDataset
+from .sr_custom_dataset import SRCustomDataset
 from .sr_folder_dataset import SRFolderDataset
 from .sr_lmdb_dataset import SRLmdbDataset
 from .sr_reds_dataset import SRREDSDataset
@@ -19,7 +20,7 @@ from .sr_vimeo90k_dataset import SRVimeo90KDataset
 __all__ = [
     'DATASETS', 'PIPELINES', 'build_dataset', 'build_dataloader',
     'BaseDataset', 'BaseMattingDataset', 'ImgInpaintingDataset',
-    'AdobeComp1kDataset', 'SRLmdbDataset', 'SRFolderDataset',
+    'AdobeComp1kDataset', 'SRLmdbDataset', 'SRCustomDataset', 'SRFolderDataset',
     'SRAnnotationDataset', 'BaseSRDataset', 'RepeatDataset', 'SRREDSDataset',
     'SRVimeo90KDataset', 'BaseGenerationDataset', 'GenerationPairedDataset',
     'GenerationUnpairedDataset', 'SRVid4Dataset'

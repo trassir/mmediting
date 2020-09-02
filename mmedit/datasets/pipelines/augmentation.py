@@ -895,3 +895,54 @@ class TemporalReverse(object):
         repr_str = self.__class__.__name__
         repr_str += f'(keys={self.keys}, reverse_ratio={self.reverse_ratio})'
         return repr_str
+
+
+@PIPELINES.register_module()
+class ImgaugAugmentation(object):
+    def __init__(self,
+                 width_gt: int, height_gt: int,
+                 width_lq: int, height_lq: int,
+                 debug: bool = False):
+        import imgaug as ia
+        import imgaug.augmenters as iaa
+
+        self._debug = debug
+        self._aug_pipeline = iaa.Sequential([
+            # iaa.OneOf([iaa.AdditiveGaussianNoise(scale=0.05 * 255, per_channel=True),
+            #            iaa.AdditiveGaussianNoise(scale=0.05 * 255),
+            #            iaa.AdditiveLaplaceNoise(scale=(0, 0.05 * 255), per_channel=True),
+            #            iaa.AdditiveLaplaceNoise(scale=(0, 0.05 * 255)),
+            #            iaa.AdditivePoissonNoise(lam=(0, 10), per_channel=True),
+            #            iaa.AdditivePoissonNoise(lam=(0, 10))]),
+            iaa.JpegCompression(compression=(30, 80)),
+            iaa.OneOf([
+                iaa.GaussianBlur(sigma=(0.0, 3.0)),
+                iaa.AverageBlur(k=((5, 11), (1, 3))),
+                iaa.MotionBlur(k=20),
+                iaa.MeanShiftBlur(spatial_radius=(5.0, 10.0)),
+                iaa.imgcorruptlike.DefocusBlur(severity=2),
+
+            ]),
+            iaa.Resize((0.1, 0.4), interpolation=ia.ALL)
+        ])
+
+        self._resize_gt_pipeline = iaa.Resize({"height": height_gt, "width": width_gt})
+        self._resize_lq_pipeline = iaa.Resize({"height": height_lq, "width": width_lq})
+
+    def __call__(self, results):
+        results['lq'] = self._aug_pipeline.augment_image(image=results['gt'])
+        results['lq'] = self._resize_lq_pipeline.augment_image(image=results['lq'])
+        results['gt'] = self._resize_gt_pipeline.augment_image(image=results['gt'])
+
+        if self._debug:
+            cv2.namedWindow('debug_gt', cv2.WINDOW_KEEPRATIO)
+            cv2.namedWindow('debug_lq', cv2.WINDOW_KEEPRATIO)
+            cv2.imshow('debug_gt', results['gt'])
+            cv2.imshow('debug_lq', results['lq'])
+            cv2.waitKey(0)
+
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__
+

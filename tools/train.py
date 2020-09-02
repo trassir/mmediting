@@ -4,6 +4,9 @@ import os
 import os.path as osp
 import time
 
+from detector_utils.pytorch.utils import inject_all_hooks
+inject_all_hooks()
+
 import mmcv
 import torch
 from mmcv import Config

@@ -1,5 +1,5 @@
 from .augmentation import (BinarizeImage, Flip, GenerateFrameIndices,
-                           GenerateFrameIndiceswithPadding, Pad, RandomAffine,
+                           GenerateFrameIndiceswithPadding, ImgaugAugmentation, Pad, RandomAffine,
                            RandomJitter, RandomMaskDilation, RandomTransposeHW,
                            Resize, TemporalReverse)
 from .compose import Compose
@@ -23,7 +23,7 @@ __all__ = [
     'Crop', 'CropAroundCenter', 'CropAroundUnknown', 'ModCrop',
     'PairedRandomCrop', 'Normalize', 'RescaleToZeroOne', 'GenerateTrimap',
     'MergeFgAndBg', 'CompositeFg', 'TemporalReverse', 'LoadImageFromFileList',
-    'GenerateFrameIndices', 'GenerateFrameIndiceswithPadding', 'FixedCrop',
-    'LoadPairedImageFromFile', 'GenerateSoftSeg', 'GenerateSeg', 'PerturbBg',
+    'GenerateFrameIndices', 'GenerateFrameIndiceswithPadding', 'ImgaugAugmentation',
+    'FixedCrop', 'LoadPairedImageFromFile', 'GenerateSoftSeg', 'GenerateSeg', 'PerturbBg',
     'CropAroundFg', 'GetSpatialDiscountMask', 'GenerateTrimapWithDistTransform'
 ]

@@ -51,7 +51,7 @@ class BaseSRDataset(BaseDataset):
         results['scale'] = self.scale
         return self.pipeline(results)
 
-    def evaluate(self, results, logger=None):
+    def evaluate(self, results, logger=None, gpu_collect=None):
         """Evaluate with different metrics.
 
         Args:
